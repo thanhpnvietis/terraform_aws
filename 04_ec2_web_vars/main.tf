@@ -22,7 +22,7 @@ variable "server_port" {
 variable "message" {
   description = "Message show on web site"
   type        = string
-  default     = "Welcome to Terraform"
+  default     = "Welcome to Terraform2"
 }
 
 resource "aws_security_group" "instance" {
@@ -46,11 +46,7 @@ resource "aws_instance" "app_server" {
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.instance.id]
   
-  user_data = <<-EOF
-              #!/bin/bash
-              echo ${var.message} > index.html
-              sudo python3 -m http.server 8080 &
-              EOF
+  user_data = file("script.bash")
 
   tags = {
     Name = "PythonWebServer"
